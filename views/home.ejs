@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center">To-Do List</h1>
+
+        <!-- Task Form -->
+        <form action="/home" method="POST">
+            <div class="form-group">
+                <label for="task">Task</label>
+                <input type="text" class="form-control" id="task" name="task" required>
+            </div>
+            <div class="form-group">
+                <label for="deadlineDate">Deadline Date</label>
+                <input type="date" class="form-control" id="deadlineDate" name="deadlineDate" required>
+            </div>
+            <div class="form-group">
+                <label for="deadlineTime">Deadline Time</label>
+                <input type="time" class="form-control" id="deadlineTime" name="deadlineTime" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Add Task</button>
+        </form>
+
+        <!-- Pending Tasks -->
+        <h2>Pending Tasks</h2>
+        <ul id="pendingTasks" class="list-group mt-4">
+            <% pendingTasks.forEach(task=> { %>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <%= task.task %> (Deadline: <%= formatDateTime(task.deadline) %>)
+                            <form action="/home/<%= task._id %>?_method=PATCH" method="POST" style="display: inline;">
+                                <input type="hidden" name="_method" value="PATCH"> <!-- Method override -->
+                                <input type="hidden" name="completedStatus" value="true">
+                                <button type="submit" class="btn btn-success btn-sm">Mark as Complete</button>
+                            </form>
+                            <form action="/home/<%= task._id %>?_method=DELETE" method="POST" style="display: inline;">
+                                <input type="hidden" name="_method" value="DELETE"> <!-- Method override -->
+                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                            </form>
+                </li>
+                <% }); %>
+        </ul>
+
+        <!-- Completed Tasks -->
+        <h2>Completed Tasks</h2>
+        <ul id="completedTasks" class="list-group mt-4">
+            <% completedTasks.forEach(task=> { %>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <%= task.task %> (Deadline: <%= formatDateTime(task.deadline) %>)
+                            <form action="/home/<%= task._id %>?_method=PATCH" method="POST" style="display: inline;">
+                                <input type="hidden" name="_method" value="PATCH"> <!-- Method override -->
+                                <input type="hidden" name="completedStatus" value="false">
+                                <button type="submit" class="btn btn-warning btn-sm">Mark as Incomplete</button>
+                            </form>
+                            <form action="/home/<%= task._id %>?_method=DELETE" method="POST" style="display: inline;">
+                                <input type="hidden" name="_method" value="DELETE"> <!-- Method override -->
+                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                            </form>
+                </li>
+                <% }); %>
+        </ul>
+    </div>
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
+</body>
+
+</html>

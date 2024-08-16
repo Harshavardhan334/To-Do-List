@@ -3,8 +3,7 @@ const mongoose = require("mongoose");
 const taskSchema = new mongoose.Schema({
     task: {
         type: String,
-        required: true,
-        unique: true
+        required: true
     },
     deadline: {
         type: Date,
